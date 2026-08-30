@@ -30,7 +30,9 @@ public class JavaLambda implements RequestHandler<Map<String, Object>,String>
             "Ajuste","b42de8a7-bf9d-8369-bf17-01ab3eabe64c",
             "Educación","4aade8a7-bf9d-82d7-a34a-0187e69273ed",
             "Deporte","e7ade8a7-bf9d-834f-afab-81d4860b237f",
-            "Compras","611de8a7-bf9d-83c3-aead-013ed9b51c0d"
+            "Compras","611de8a7-bf9d-83c3-aead-013ed9b51c0d",
+            "Transporte","55ade8a7-bf9d-838d-87ae-01552b7da65c",
+            "Suscripciones","a4fde8a7-bf9d-8286-b520-81af03df03cd"
     ));
     private static HashMap<String, String> Cuentas = new HashMap<String,String>(Map.of(
             "Nequi","392de8a7-bf9d-832c-bf2a-81c953edb1da",
