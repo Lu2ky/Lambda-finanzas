@@ -3,12 +3,10 @@ package org.example;
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
-import java.io.IOError;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
@@ -16,7 +14,6 @@ import java.net.http.HttpResponse;
 import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
-import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
 public class JavaLambda implements RequestHandler<Map<String, Object>,String>
@@ -40,19 +37,15 @@ public class JavaLambda implements RequestHandler<Map<String, Object>,String>
     private static final String DATA_SOURCE_ID = "b10de8a7-bf9d-8241-a7dd-07abbda2cf6e";
     private static final String NOTION_TOKEN = System.getenv("NOTION_TOKEN");
     private static final HttpClient client = HttpClient.newHttpClient();
-
     @Override
     public String handleRequest(Map<String, Object> event, Context context) {
         Input input = null;
         try {
             // Obtener el body enviado por API Gateway
             String body = (String) event.get("body");
-
             context.getLogger().log("BODY: " + body);
-
             // Convertir el JSON del body a Input
             input = mapper.readValue(body, Input.class);
-
             context.getLogger().log("Concepto: " + input.getConcepto());
             context.getLogger().log("Cuenta: " + input.getCuenta());
             context.getLogger().log("Categoría: " + input.getCategoría());
@@ -63,14 +56,10 @@ public class JavaLambda implements RequestHandler<Map<String, Object>,String>
             context.getLogger().log("ERROR: " + e.getMessage());
             throw new RuntimeException(e);
         }
-
         String categoria_Pre_Procesamiento = input.getCategoría();
         String cuentas_Pre_Procesamiento = input.getCuenta();
-
         String categoria_Post_Procesamiento = Categorias.get(categoria_Pre_Procesamiento);
         String cuentas_Post_Procesamiento = Cuentas.get(cuentas_Pre_Procesamiento);
-
-        Output output = new Output(input.getConcepto(),cuentas_Post_Procesamiento,categoria_Post_Procesamiento,input.getValor(),input.getComentarios());
         String jsonBody = "";
         try {
             jsonBody = buildNotionPayload(input,categoria_Post_Procesamiento,cuentas_Post_Procesamiento);
@@ -94,25 +83,18 @@ public class JavaLambda implements RequestHandler<Map<String, Object>,String>
             context.getLogger().log("Error consumiendo Notion: " + e.getMessage());
             throw new RuntimeException("Fallo al crear página en Notion", e);
         }
-
-
         return jsonBody;
-
     }
     private String buildNotionPayload(Input input, String catID, String cuentaID) throws JsonProcessingException {
         LocalDate fechaActual = LocalDate.now();
         DateTimeFormatter formato = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         String fechaFormateada = fechaActual.format(formato);
         System.out.println(fechaFormateada);
-
-
         ObjectNode root = mapper.createObjectNode();
         ObjectNode parent = mapper.createObjectNode();
         parent.put("data_source_id", DATA_SOURCE_ID);
         root.set("parent",parent);
         ObjectNode properties = mapper.createObjectNode();
-
-
         // Concepto
         ObjectNode Concepto = mapper.createObjectNode();
         ArrayNode title = mapper.createArrayNode();
@@ -165,15 +147,7 @@ public class JavaLambda implements RequestHandler<Map<String, Object>,String>
         cuenta.set("relation",relation_1);
         cuenta.put("has_more",false);
         properties.set("Cuenta",cuenta);
-
-
-
         root.set("properties",properties);
-
-
-
-
-
         return mapper.writeValueAsString(root);
     }
 }
