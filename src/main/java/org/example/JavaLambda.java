@@ -19,10 +19,6 @@ import java.util.Map;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
-/**
- * Hello world!
- *
- */
 public class JavaLambda implements RequestHandler<Map<String, Object>,String>
 {
     private static HashMap<String, String> Categorias = new HashMap<String,String>(Map.of(
@@ -37,7 +33,8 @@ public class JavaLambda implements RequestHandler<Map<String, Object>,String>
     private static HashMap<String, String> Cuentas = new HashMap<String,String>(Map.of(
             "Nequi","392de8a7-bf9d-832c-bf2a-81c953edb1da",
             "Tarjeta de crédito","797de8a7-bf9d-831a-936c-814cc3b22bb4",
-            "Efectivo","cf8de8a7-bf9d-8248-b8c0-8135c6db95ba"
+            "Efectivo","cf8de8a7-bf9d-8248-b8c0-8135c6db95ba",
+            "Nu", "3ecde8a7-bf9d-80ca-92af-f16319f0161e"
     ));
     private static final ObjectMapper mapper = new ObjectMapper();
     private static final String DATA_SOURCE_ID = "b10de8a7-bf9d-8241-a7dd-07abbda2cf6e";
