@@ -118,7 +118,7 @@ public class JavaLambda implements RequestHandler<Map<String, Object>,String>
         ArrayNode title = mapper.createArrayNode();
         ObjectNode text = mapper.createObjectNode();
         ObjectNode content = mapper.createObjectNode();
-        content.put("content",input.getConcepto());
+        content.put("content","🔴 " + input.getConcepto());
         text.set("text",content);
         title.add(text);
         Concepto.set("title",title);
